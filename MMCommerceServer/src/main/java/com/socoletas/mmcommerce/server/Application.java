@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.*;
 
 import com.socoletas.mmcommerce.server.authentication.dao.AccountRepository;
 import com.socoletas.mmcommerce.server.authentication.domain.Account;
