@@ -20,16 +20,24 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.*;
 
 import com.socoletas.mmcommerce.server.authentication.dao.AccountRepository;
 import com.socoletas.mmcommerce.server.authentication.domain.Account;
 
+@Controller
 @SpringBootApplication
 public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+	
+	@RequestMapping("/")
+    @ResponseBody
+    String home() {
+      return "Hello World!";
+    }
 
 	@Bean
     CommandLineRunner init(final AccountRepository accountRepository) {
