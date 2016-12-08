@@ -1,5 +1,7 @@
 package com.socoletas.mmcommerce.server.transaction;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.socoletas.mmcommerce.server.authentication.dao.AccountRepository;
-import com.socoletas.mmcommerce.server.authentication.domain.Account;
+import com.socoletas.mmcommerce.server.account.dao.AccountRepository;
+import com.socoletas.mmcommerce.server.account.domain.Account;
 import com.socoletas.mmcommerce.server.transaction.dao.TransactionRepository;
 import com.socoletas.mmcommerce.server.transaction.domain.Transaction;
 import com.socoletas.mmcommerce.server.transaction.dto.PaymentDTO;
@@ -30,10 +32,19 @@ public class TransactionController {
     	transaction.setDebtor(loggedAccount);
     	transaction.setCreditor(creditorAccount);
     	transaction.setType("Payment");
-    	transaction.setAmount(pPaymentDTO.getAmount());
+    	BigDecimal amount = pPaymentDTO.getAmount();
+		transaction.setAmount(amount);
     	if (!loggedAccount.getPassword().equals(pPaymentDTO.getPassword()))
     	{
     		throw new RuntimeException("Wrong confirmation password");
+    	}
+    	synchronized (loggedAccount)
+    	{
+    		loggedAccount.setBalance(loggedAccount.getBalance().subtract(amount)); 
+    	}
+    	synchronized (creditorAccount)
+    	{
+    		creditorAccount.setBalance(creditorAccount.getBalance().add(amount));
     	}
     	transactionRepository.save(transaction);
     }

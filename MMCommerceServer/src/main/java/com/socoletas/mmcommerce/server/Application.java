@@ -1,5 +1,6 @@
 package com.socoletas.mmcommerce.server;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.socoletas.mmcommerce.server.authentication.dao.AccountRepository;
-import com.socoletas.mmcommerce.server.authentication.domain.Account;
+import com.socoletas.mmcommerce.server.account.dao.AccountRepository;
+import com.socoletas.mmcommerce.server.account.domain.Account;
 
 @Controller
 @SpringBootApplication
@@ -37,7 +38,7 @@ public class Application {
 	@RequestMapping("/")
     @ResponseBody
     String home() {
-      return "Hello World!";
+      return "Welcome to MMCommerce APP!!";
     }
 
 	@Bean
@@ -51,6 +52,43 @@ public class Application {
         	account.setUsername("admin");
         	account.setPassword("admin");
         	accountRepository.save(account);
+        	
+        	
+        	account = new Account();
+        	account.setUsername("danilo");
+        	account.setPassword("danilo123");
+        	account.setBalance(BigDecimal.valueOf(500));
+        	account.setCeiling(BigDecimal.valueOf(200));
+        	accountRepository.save(account);
+        	
+        	account = new Account();
+        	account.setUsername("carol");
+        	account.setPassword("carol123");
+        	account.setBalance(BigDecimal.valueOf(800));
+        	account.setCeiling(BigDecimal.valueOf(300));
+        	accountRepository.save(account);
+        	
+        	account = new Account();
+        	account.setUsername("alisson");
+        	account.setPassword("alisson123");
+        	account.setBalance(BigDecimal.valueOf(1500));
+        	account.setCeiling(BigDecimal.valueOf(100));
+        	accountRepository.save(account);
+        	
+        	account = new Account();
+        	account.setUsername("affonso");
+        	account.setPassword("affonso123");
+        	account.setBalance(BigDecimal.valueOf(2500));
+        	account.setCeiling(BigDecimal.valueOf(500));
+        	accountRepository.save(account);
+        	
+        	account = new Account();
+        	account.setUsername("tiberio");
+        	account.setPassword("tiberio123");
+        	account.setBalance(BigDecimal.valueOf(4500));
+        	account.setCeiling(BigDecimal.valueOf(500));
+        	accountRepository.save(account);
+        	
 
         }
         

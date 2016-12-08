@@ -1,16 +1,7 @@
-package com.socoletas.mmcommerce.server.authentication.domain;
+package com.socoletas.mmcommerce.server.account.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
-public class Account {
-	@Id
-	@Column(nullable = false)
+public class AccountDTO {
 	private String username;
-	
-	@Column(nullable = false)
 	private String password;
 	
 	public String getUsername() {
@@ -27,5 +18,4 @@ public class Account {
 	}
 	
 	
-
 }

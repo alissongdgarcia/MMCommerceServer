@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.socoletas.mmcommerce.server.authentication.domain.Account;
+import com.socoletas.mmcommerce.server.account.domain.Account;
 
 @Entity
 public class Transaction {
