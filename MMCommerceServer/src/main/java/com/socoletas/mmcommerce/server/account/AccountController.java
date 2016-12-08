@@ -46,6 +46,10 @@ public class AccountController {
     		throw new RuntimeException("User already exists");
     	}
     	Account account = new Account();
+    	if (pUser.getPassword()==null || pUser.getPassword().isEmpty())
+    	{
+    		throw new RuntimeException("Empty password not allowed");
+    	}
     	account.setPassword(pUser.getPassword());
     	account.setUsername(pUser.getUsername());
     	accountRepository.save(account);

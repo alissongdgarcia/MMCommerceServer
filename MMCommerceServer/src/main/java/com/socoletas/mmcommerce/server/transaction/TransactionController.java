@@ -24,23 +24,30 @@ public class TransactionController {
     @RequestMapping("/payment")
     public void doPayment(@RequestBody PaymentDTO pPaymentDTO) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String loggedUser = auth.getName();
-    	Account loggedAccount = accountRepository.findOne(loggedUser);
+    	String debtor = auth.getName();
+    	Account debtorAccount = accountRepository.findOne(debtor);
     	String creditor = pPaymentDTO.getCreditor();
     	Account creditorAccount = accountRepository.findOne(creditor);
     	Transaction transaction = new Transaction();
-    	transaction.setDebtor(loggedAccount);
+    	transaction.setDebtor(debtorAccount);
     	transaction.setCreditor(creditorAccount);
     	transaction.setType("Payment");
     	BigDecimal amount = pPaymentDTO.getAmount();
 		transaction.setAmount(amount);
-    	if (!loggedAccount.getPassword().equals(pPaymentDTO.getPassword()))
+    	if (!debtorAccount.getPassword().equals(pPaymentDTO.getPassword()))
     	{
     		throw new RuntimeException("Wrong confirmation password");
     	}
-    	synchronized (loggedAccount)
+    	
+    	BigDecimal allowance = debtorAccount.getBalance().add(debtorAccount.getCeiling());
+    	if (amount.compareTo(allowance)>0)
     	{
-    		loggedAccount.setBalance(loggedAccount.getBalance().subtract(amount)); 
+    		throw new RuntimeException("Payment not allowed due to missing balance or ceiling");
+    	}
+    	
+    	synchronized (debtorAccount)
+    	{
+    		debtorAccount.setBalance(debtorAccount.getBalance().subtract(amount)); 
     	}
     	synchronized (creditorAccount)
     	{
